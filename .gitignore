@@ -1,0 +1,42 @@
+# Arquivos de sistema e SO
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Variáveis de ambiente e segredos
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+
+# Ambientes virtuais e dependências
+venv/
+env/
+__pycache__/
+*.pyc
+node_modules/
+.next/
+dist/
+build/
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Fila local do Maestro: incidentes e emails pendentes (podem conter trechos sensiveis)
+.maestro/
+
+# Aplicativos independentes: nunca entram no histórico do kit de agentes.
+/mercado3d/
+/prisma-market-3d/
+.aws/
+.codex/auth.json
+.pytest_cache/
+.venv/
+.coverage
+*.tsbuildinfo

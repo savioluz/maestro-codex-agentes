@@ -1,0 +1,155 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Maestro: Validar estrutura (alerta se falhar)",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "scripts/run_guarded.py",
+        "--",
+        "python",
+        "scripts/validate_codex_project.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Maestro: Auditoria local (alerta se falhar)",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "scripts/run_guarded.py",
+        "--",
+        "python",
+        "templates/security/audit_seal.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Maestro: Configurar email Gmail (senha oculta)",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "scripts/setup_email.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Maestro: Testar envio de email REAL",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "scripts/alert_email.py",
+        "--test"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Maestro: Reenviar alertas pendentes",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "scripts/alert_email.py",
+        "--flush"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Maestro: Skills Guardian - revisar fila",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "scripts/skills_curator.py",
+        "--report"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Maestro: Git @savioluz (identidade local)",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "scripts/git_savioluz.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Cloud Deploy: Inspecionar MERCADO3D (local)",
+      "type": "process",
+      "command": "python3",
+      "windows": {
+        "command": "python"
+      },
+      "args": [
+        "scripts/cloud_deploy.py",
+        "inspect",
+        "mercado3d"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Cloud Deploy: Verificar MERCADO3D (estático)",
+      "type": "process",
+      "command": "python3",
+      "windows": {
+        "command": "python"
+      },
+      "args": [
+        "scripts/cloud_deploy.py",
+        "check",
+        "mercado3d"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Cloud Deploy: Testar ferramentas (sem rede)",
+      "type": "process",
+      "command": "python3",
+      "windows": {
+        "command": "python"
+      },
+      "args": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_cloud_deploy.py",
+        "-v"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

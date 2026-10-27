@@ -1,0 +1,229 @@
+{
+  "version": 1,
+  "notes": "Receitas preventivas sugeridas; NENHUMA e correcao automaticamente comprovada. Registrar teste antes de alterar SKILL.md.",
+  "solutions": [
+    {
+      "id": "cloud-postgres",
+      "signals": [
+        "too many (?:clients|connections)",
+        "remaining connection slots",
+        "password authentication failed",
+        "SSL connection is required",
+        "sslmode.*require"
+      ],
+      "skills": [
+        "deploy-mercado3d",
+        "skills-guardian"
+      ],
+      "diagnostic": "Verificar pool, limites e TLS PostgreSQL sem expor DSN.",
+      "candidate_solution": "Conferir credencial no cofre, URL pooled/direct adequada e TLS exigido pelo provedor; não desabilitar validação para contornar erro.",
+      "verify": "Conectar no ambiente aprovado, executar SELECT 1 e healthcheck sem exibir URL."
+    },
+    {
+      "id": "python-modulo-ausente",
+      "signals": [
+        "ModuleNotFoundError",
+        "No module named"
+      ],
+      "skills": [
+        "django-mysql-saas",
+        "qa-automated-testing"
+      ],
+      "diagnostic": "Verificar ambiente virtual ativo e instalacao declarada em requirements/pyproject.",
+      "candidate_solution": "Ativar venv do projeto e instalar somente dependencias declaradas; evitar pip global e nunca adivinhar versoes.",
+      "verify": "python -m pip check; executar testes do modulo afetado."
+    },
+    {
+      "id": "porta-em-uso",
+      "signals": [
+        "EADDRINUSE",
+        "Address already in use",
+        "port .* in use"
+      ],
+      "skills": [
+        "nextjs-seo-master",
+        "vps-nodocker-deploy"
+      ],
+      "diagnostic": "Identificar processo que ocupa a porta e confirmar se o servico deve continuar executando.",
+      "candidate_solution": "Alterar porta da aplicacao em desenvolvimento ou encerrar apenas processo inequivocamente pertencente ao projeto e autorizado.",
+      "verify": "Subir servidor em nova porta, executar healthcheck."
+    },
+    {
+      "id": "servico-indisponivel",
+      "signals": [
+        "ECONNREFUSED",
+        "Connection refused",
+        "could not connect to server"
+      ],
+      "skills": [
+        "django-mysql-saas",
+        "vps-nodocker-deploy"
+      ],
+      "diagnostic": "Verificar host, porta, processo, rede e estado da dependencia sem exibir secrets.",
+      "candidate_solution": "Iniciar servico dependente conforme sua configuracao oficial e corrigir host/porta de ambiente com revisao.",
+      "verify": "Testar healthcheck e consulta nao destrutiva."
+    },
+    {
+      "id": "npm-deps",
+      "signals": [
+        "ERESOLVE",
+        "npm ERR!",
+        "Cannot find module"
+      ],
+      "skills": [
+        "nextjs-seo-master",
+        "game-canvas-pwa"
+      ],
+      "diagnostic": "Comparar package.json, lockfile e versao Node no projeto.",
+      "candidate_solution": "Usar instalador e versao Node esperados pelo lockfile; corrigir dependencias conflitantes conscientemente, sem --force por padrao.",
+      "verify": "npm ci ou equivalente e npm test/build aplicavel."
+    },
+    {
+      "id": "typescript",
+      "signals": [
+        "TS\\d{4}",
+        "Type .* is not assignable",
+        "Property .* does not exist on type"
+      ],
+      "skills": [
+        "nextjs-seo-master"
+      ],
+      "diagnostic": "Localizar definicoes de tipo e funcao que originaram erro.",
+      "candidate_solution": "Ajustar contrato de tipos e chamadas sem recorrer a any/ts-ignore como atalho.",
+      "verify": "npx tsc --noEmit e testes aplicaveis."
+    },
+    {
+      "id": "playwright",
+      "signals": [
+        "Timeout .* exceeded",
+        "locator.*strict mode",
+        "expect\\(.*\\).*failed"
+      ],
+      "skills": [
+        "qa-automated-testing"
+      ],
+      "diagnostic": "Reproduzir localmente; coletar trace e screenshot somente de teste, verificar seletores e assincronia.",
+      "candidate_solution": "Corrigir seletores estaveis e asserts baseados no comportamento observavel, sem sleep arbitrario.",
+      "verify": "Reexecutar o teste e suite afetada sem flaky retries excessivos."
+    },
+    {
+      "id": "git-autenticacao",
+      "signals": [
+        "Authentication failed",
+        "Permission denied \\(publickey\\)",
+        "remote: Repository not found"
+      ],
+      "skills": [
+        "skills-guardian"
+      ],
+      "diagnostic": "Conferir URL do remote e autenticacao git/gh para @savioluz sem coletar tokens.",
+      "candidate_solution": "Rodar gh auth status localmente e corrigir o remote com autorizacao do usuario; nao colar token na URL.",
+      "verify": "git remote -v e git ls-remote origin com acesso esperado."
+    },
+    {
+      "id": "git-conflito",
+      "signals": [
+        "CONFLICT \\(content\\)",
+        "Merge conflict",
+        "unmerged paths"
+      ],
+      "skills": [
+        "skills-guardian"
+      ],
+      "diagnostic": "Inspecionar git status e diffs, preservar ambas as alteracoes ate entender a intencao.",
+      "candidate_solution": "Resolver conflitos por arquivo com revisao humana; nao usar reset --hard automaticamente.",
+      "verify": "git diff --check e suite afetada."
+    },
+    {
+      "id": "smtp-gmail",
+      "signals": [
+        "SMTPAuthenticationError",
+        "535 5\\.7\\.",
+        "Username and Password not accepted"
+      ],
+      "skills": [
+        "skills-guardian"
+      ],
+      "diagnostic": "Verificar habilitacao de senha de app e configuracao SMTP sem mostrar credencial.",
+      "candidate_solution": "Configurar senha de app no .env local e testar python scripts/alert_email.py --test; nao usar senha comum.",
+      "verify": "Recebimento real do e-mail de teste."
+    },
+    {
+      "id": "certificado",
+      "signals": [
+        "CERTIFICATE_VERIFY_FAILED",
+        "SSLCertVerificationError",
+        "unable to get local issuer certificate"
+      ],
+      "skills": [
+        "vps-nodocker-deploy",
+        "auditoria-seguranca"
+      ],
+      "diagnostic": "Verificar horario, cadeia de certificados e proxy da rede.",
+      "candidate_solution": "Atualizar CA corretamente e ajustar certificados no servidor; nao usar verify=False.",
+      "verify": "Repetir conexao TLS com verificacao habilitada."
+    },
+    {
+      "id": "banco-schema",
+      "signals": [
+        "OperationalError",
+        "relation .* does not exist",
+        "Unknown column"
+      ],
+      "skills": [
+        "django-mysql-saas"
+      ],
+      "diagnostic": "Conferir versao do schema, migrations pendentes e configuracao da base correta.",
+      "candidate_solution": "Planejar e testar migration primeiro em copia do banco. Em producao, pedir aprovacao e backup.",
+      "verify": "Testes de migracao e consulta read-only no schema alvo."
+    },
+    {
+      "id": "docker-ambiente",
+      "signals": [
+        "Cannot connect to the Docker daemon",
+        "docker: command not found"
+      ],
+      "skills": [
+        "deploy-vps"
+      ],
+      "diagnostic": "Identificar se o projeto usa Docker; este kit adota VPS sem Docker quando possivel.",
+      "candidate_solution": "Preferir os templates Systemd/PM2; se Docker for requisito externo, pedir autorizacao antes de instalar.",
+      "verify": "Validar servico via healthcheck no ambiente aprovado."
+    },
+    {
+      "id": "cloud-build",
+      "signals": [
+        "Build failed",
+        "buildCommand.*failed",
+        "failed to build",
+        "Exited with status [1-9]"
+      ],
+      "skills": [
+        "deploy-mercado3d",
+        "skills-guardian"
+      ],
+      "diagnostic": "Identificar etapa e runtime no log minimizado; comparar lockfile e diretório raiz configurado.",
+      "candidate_solution": "Reproduzir build na versão declarada e corrigir comando/rootDir/dependência identificada; não apagar lockfiles automaticamente.",
+      "verify": "Reexecutar build isolado e teste de regressão antes de novo deploy autorizado."
+    },
+    {
+      "id": "cloud-health",
+      "signals": [
+        "invalid_health_payload",
+        "health_connection_or_payload_error",
+        "health_response_too_large",
+        "http_error",
+        "HTTP (?:401|403|404|429|500|502|503|504)",
+        "health_deadline_exceeded",
+        "health_worker_error"
+      ],
+      "skills": [
+        "deploy-mercado3d",
+        "skills-guardian"
+      ],
+      "diagnostic": "Conferir health URL, logs, proteção de acesso, API e conexão do banco; HTTP 200 isolado não prova saúde.",
+      "candidate_solution": "Reproduzir falha e ajustar a camada identificada; preservar autenticação e limites; não reiniciar produção às cegas.",
+      "verify": "Health JSON PostgreSQL e fluxo frontend/API/banco aprovados após correção."
+    }
+  ]
+}

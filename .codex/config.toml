@@ -1,0 +1,8 @@
+# Ativado somente quando o projeto for marcado como confiável pelo Codex.
+# CLI e extensão do VS Code usam a mesma configuração.
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 4
+
+# Não fixamos modelo nem permissões: herda da conta e da sessão do usuário.
+# Sem comandos automáticos e sem autorização implícita para deploy.

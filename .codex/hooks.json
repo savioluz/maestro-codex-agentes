@@ -1,0 +1,19 @@
+{
+  "description": "Maestro: inspecionar falhas de ferramentas Codex e gerar alerta SMTP + aprendizado das skills",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python scripts/codex_error_hook.py",
+            "commandWindows": "python scripts\\codex_error_hook.py",
+            "async": true,
+            "timeout": 25,
+            "statusMessage": "Maestro: verificando incidentes observaveis"
+          }
+        ]
+      }
+    ]
+  }
+}

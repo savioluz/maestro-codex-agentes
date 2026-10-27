@@ -1,0 +1,23 @@
+name: Validar Maestro para Codex
+on:
+  push:
+  pull_request:
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validar arquivos Codex e Skills
+        run: python scripts/validate_codex_project.py
+      - name: Testar alertas, hook e catalogo (sem disparar emails)
+        run: python -m unittest discover -s tests -v
+      - name: Testar Cloud Deploy (sem rede, SMTP ou deploy)
+        run: python -m unittest discover -s scripts -p 'test_cloud_deploy.py' -v
+      - name: Conferir sintaxe dos scripts de instalação
+        run: bash -n install.sh
+      - name: Conferir código Python
+        run: python -m compileall -q scripts tests && python -m py_compile templates/security/audit_seal.py

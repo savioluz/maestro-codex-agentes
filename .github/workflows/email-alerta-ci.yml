@@ -1,0 +1,37 @@
+name: Enviar email se validacao Maestro falhar
+on:
+  workflow_run:
+    workflows: ["Validar Maestro para Codex"]
+    types: [completed]
+permissions:
+  contents: read
+jobs:
+  email-alerta:
+    # Seguro para PRs: checkout apenas do branch principal, nunca codigo do PR que disparou o evento.
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout scripts da branch principal (nao codigo do PR)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Enviar resumo do erro por SMTP
+        env:
+          MAESTRO_SMTP_USER: savioluz.dev@gmail.com
+          MAESTRO_SMTP_PASSWORD: ${{ secrets.MAESTRO_SMTP_PASSWORD }}
+          MAESTRO_ALERT_TO: savioluz.dev@gmail.com
+          MAESTRO_EMAIL_ENABLED: '1'
+          FAIL_URL: ${{ github.event.workflow_run.html_url }}
+          FAIL_ID: ${{ github.event.workflow_run.id }}
+          FAIL_WORKFLOW: ${{ github.event.workflow_run.name }}
+        run: |
+          python scripts/alert_email.py \
+            --title 'Falha na validacao Codex no GitHub Actions' \
+            --message "Consulte o log da execucao: ${FAIL_URL}" \
+            --source 'github-actions' \
+            --id "gh-${FAIL_ID}"
